@@ -1,0 +1,46 @@
+#+TITLE: youngker's Emacs configuration
+#+OPTIONS: num:nil ^:nil
+* Install package
+#+BEGIN_SRC emacs-lisp
+(require-package 'eopengrok)
+(require-package 'elogcat)
+(require-package 'ido-vertical-mode)
+#+END_SRC
+
+* UI
+#+BEGIN_SRC emacs-lisp
+(setq visible-bell nil)
+(setq ring-bell-function #'ignore)
+#+END_SRC
+
+* Util
+** eopengrok
+#+BEGIN_SRC emacs-lisp
+(require 'eopengrok)
+(setq eopengrok-jar   "/Users/youngker/Projects/opengrok-0.12.1.5/lib/opengrok.jar")
+(setq eopengrok-ctags "/usr/local/bin/ctags")
+#+END_SRC
+
+** ido-vertical-mode
+#+BEGIN_SRC emacs-lisp
+(require 'ido-vertical-mode)
+(ido-vertical-mode)
+(setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
+#+END_SRC
+
+* Keybinding
+** highlight-symbol
+#+BEGIN_SRC emacs-lisp
+(global-set-key [(control f3)] 'highlight-symbol)
+#+END_SRC
+
+** eopengrok
+#+BEGIN_SRC emacs-lisp
+(define-key global-map (kbd "C-c s I") 'eopengrok-index-files)
+(define-key global-map (kbd "C-c s d") 'eopengrok-find-definition)
+(define-key global-map (kbd "C-c s f") 'eopengrok-find-file)
+(define-key global-map (kbd "C-c s s") 'eopengrok-find-reference)
+(define-key global-map (kbd "C-c s t") 'eopengrok-find-text)
+(define-key global-map (kbd "C-c s h") 'eopengrok-find-history)
+(define-key global-map (kbd "C-c s l") 'eopengrok-switch-to-buffer)
+#+END_SRC
