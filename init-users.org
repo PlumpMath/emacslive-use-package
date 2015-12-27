@@ -1,41 +1,90 @@
-#+TITLE: youngker's Emacs configuration
+#+TITLE: youngker's emacs configuration
 #+OPTIONS: num:nil ^:nil
-* Install package
-#+BEGIN_SRC emacs-lisp
-(require-package 'eopengrok)
-(require-package 'elogcat)
-(require-package 'ido-vertical-mode)
-#+END_SRC
 
-* UI
+* appearance
+** silence
 #+BEGIN_SRC emacs-lisp
 (setq visible-bell nil)
 (setq ring-bell-function #'ignore)
 #+END_SRC
 
-* Util
-** eopengrok
+** font
 #+BEGIN_SRC emacs-lisp
-(require 'eopengrok)
-(setq eopengrok-jar   "/Users/youngker/Projects/opengrok-0.12.1.5/lib/opengrok.jar")
-(setq eopengrok-ctags "/usr/local/bin/ctags")
+(add-to-list 'default-frame-alist
+             `(font . ,(if *is-a-mac*
+                          "Monaco-15"
+                          "Monaco-12")))
 #+END_SRC
 
-** ido-vertical-mode
+** no blinking
 #+BEGIN_SRC emacs-lisp
-(require 'ido-vertical-mode)
-(ido-vertical-mode)
-(setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
+(blink-cursor-mode -1)
 #+END_SRC
 
-* Keybinding
 ** highlight-symbol
 #+BEGIN_SRC emacs-lisp
 (global-set-key [(control f3)] 'highlight-symbol)
 #+END_SRC
 
+** helm
+#+BEGIN_SRC emacs-lisp
+(require-package 'helm)
+(require 'helm)
+(require 'helm-config)
+
+;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
+;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
+;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
+(global-set-key (kbd "C-c h") 'helm-command-prefix)
+(global-unset-key (kbd "C-x c"))
+
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
+(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
+(define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+
+(when (executable-find "curl")
+  (setq helm-google-suggest-use-curl-p t))
+
+(setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
+      helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
+      helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
+      helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
+      helm-ff-file-name-history-use-recentf t)
+
+(setq helm-M-x-fuzzy-match        t
+      helm-buffers-fuzzy-matching t
+      helm-recentf-fuzzy-match    t
+      helm-semantic-fuzzy-match   t
+      helm-imenu-fuzzy-match      t)
+
+(setq helm-echo-input-in-header-line t)
+
+(defun helm-hide-minibuffer-maybe ()
+  (when (with-helm-buffer helm-echo-input-in-header-line)
+    (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+      (overlay-put ov 'window (selected-window))
+      (overlay-put ov 'face (let ((bg-color (face-background 'default nil)))
+                              `(:background ,bg-color :foreground ,bg-color)))
+      (setq-local cursor-type nil))))
+
+(add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
+
+(global-set-key (kbd "C-x C-i") 'helm-imenu)
+(global-set-key (kbd "C-x f") 'helm-recentf)
+(global-set-key [remap execute-extended-command] 'helm-M-x)
+(global-set-key (kbd "C-x b") 'helm-mini)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+
+(helm-mode 1)
+#+END_SRC
+
+* misc
 ** eopengrok
 #+BEGIN_SRC emacs-lisp
+(require-package 'eopengrok)
+(require 'eopengrok)
+(setq eopengrok-jar   "/Users/youngker/Projects/opengrok-0.12.1.5/lib/opengrok.jar")
+(setq eopengrok-ctags "/usr/local/bin/ctags")
 (define-key global-map (kbd "C-c s I") 'eopengrok-index-files)
 (define-key global-map (kbd "C-c s d") 'eopengrok-find-definition)
 (define-key global-map (kbd "C-c s f") 'eopengrok-find-file)
@@ -43,4 +92,28 @@
 (define-key global-map (kbd "C-c s t") 'eopengrok-find-text)
 (define-key global-map (kbd "C-c s h") 'eopengrok-find-history)
 (define-key global-map (kbd "C-c s l") 'eopengrok-switch-to-buffer)
+#+END_SRC
+
+** elogcat
+#+BEGIN_SRC emacs-lisp
+(require-package 'elogcat)
+#+END_SRC
+
+** ido-vertical-mode
+#+BEGIN_SRC emacs-lisp
+(require-package 'ido-vertical-mode)
+(require 'ido-vertical-mode)
+(ido-vertical-mode)
+(setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
+#+END_SRC
+
+* language
+** clojure
+#+BEGIN_SRC emacs-lisp
+(require-package 'clj-refactor)
+
+(add-hook 'clojure-mode-hook
+          (lambda ()
+            (clj-refactor-mode 1)
+            (cljr-add-keybindings-with-prefix "C-c C-m")))
 #+END_SRC
