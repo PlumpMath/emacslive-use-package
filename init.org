@@ -18,8 +18,8 @@
 (setq use-package-verbose t)
 (require 'use-package)
 (use-package auto-compile
-             :ensure t
-             :config (auto-compile-on-load-mode))
+  :ensure t
+  :config (auto-compile-on-load-mode))
 (setq load-prefer-newer t)
 #+END_SRC
 
@@ -54,10 +54,10 @@
 #+BEGIN_SRC emacs-lisp
 (when (equal system-type 'darwin)
   (use-package exec-path-from-shell
-             :defer t
-             :ensure t
-             :init 
-             (exec-path-from-shell-initialize))
+    :defer t
+    :ensure t
+    :init
+    (exec-path-from-shell-initialize))
 
   (setq mac-option-modifier 'super)
   (setq mac-command-modifier 'meta)
@@ -71,133 +71,125 @@
 
 *** highlight-symbol
 #+BEGIN_SRC emacs-lisp
-(global-set-key [(control f3)] 'highlight-symbol)
+(use-package highlight-symbol
+  :ensure t
+  :bind (([(control f3)] . highlight-symbol)
+         ([(shift f3)]   . highlight-symbol-prev)
+         ([(meta f3)]    . highlight-symbol-next)))
 #+END_SRC
 
 *** helm
 #+BEGIN_SRC emacs-lisp
 (use-package helm
-             :ensure t
-             :diminish helm-mode
-             :init
-             (progn
-               (require 'helm-config)
-               (setq helm-idle-delay 0.0 ; update fast sources immediately (doesn't).
-                     helm-input-idle-delay 0.01  ; this actually updates things
-                                        ; reeeelatively quickly.
-                     helm-yas-display-key-on-candidate t
-                     helm-quick-update           t
-                     helm-M-x-requires-pattern   nil
-                     helm-ff-skip-boring-files   t
-                     helm-split-window-in-side-p t
-                     helm-M-x-fuzzy-match        t
-                     helm-buffers-fuzzy-matching t
-                     helm-recentf-fuzzy-match    t
-                     helm-semantic-fuzzy-match   t
-                     helm-imenu-fuzzy-match      t)
-;               (global-set-key (kbd "C-c h") 'helm-command-prefix)
-;               (global-unset-key (kbd "C-x c"))
-               (helm-mode))
-             :bind (;("C-c h" . helm-mini)
-                    ("C-x C-f" . helm-find-files)
-                    ("C-h a" . helm-apropos)
-                    ("C-x C-b" . helm-buffers-list)
-                    ("C-x b" . helm-buffers-list)
-                    ("M-y" . helm-show-kill-ring)
-                    ("M-x" . helm-M-x)
-                    ("C-x c o" . helm-occur)
-                    ("C-x c s" . helm-swoop)
-                    ("C-x c y" . helm-yas-complete)
-                    ("C-x c Y" . helm-yas-create-snippet-on-region)
-                    ("C-x C-i" . helm-imenu)
-                    ("C-x f" . helm-recentf)
-                    ("C-x c b" . my/helm-do-grep-book-notes)
-                    ("C-x c SPC" . helm-all-mark-rings)))
+  :ensure t
+  :diminish helm-mode
+  :init
+  (progn
+    (require 'helm-config)
+    (setq helm-idle-delay 0.0 ; update fast sources immediately (doesn't).
+          helm-input-idle-delay 0.01 ; this actually updates things
+          helm-yas-display-key-on-candidate t
+          helm-quick-update           t
+          helm-M-x-requires-pattern   nil
+          helm-ff-skip-boring-files   t
+          helm-split-window-in-side-p t
+          helm-M-x-fuzzy-match        t
+          helm-buffers-fuzzy-matching t
+          helm-recentf-fuzzy-match    t
+          helm-semantic-fuzzy-match   t
+          helm-imenu-fuzzy-match      t)
+    (global-unset-key (kbd "C-x c"))
+    (helm-mode))
+  :bind (("C-c h"     . helm-command-prefix)
+         ("C-x C-f"   . helm-find-files)
+         ("C-x b"     . helm-buffers-list)
+         ("M-y"       . helm-show-kill-ring)
+         ("M-x"       . helm-M-x)
+         ("C-x C-i"   . helm-imenu)
+         ("C-c h o"   . helm-occur)
+         ("C-x f"     . helm-recentf)
+         ("C-c h SPC" . helm-all-mark-rings)))
 #+END_SRC
 
 *** helm-descbinds
 #+BEGIN_SRC emacs-lisp
 (use-package helm-descbinds
-             :defer t
-             :ensure t
-             :bind (("C-h b" . helm-descbinds)
-                    ("C-h w" . helm-descbinds)))
+  :defer t
+  :ensure t
+  :bind (("C-c h b" . helm-descbinds)
+         ("C-c h w" . helm-descbinds)))
 #+END_SRC
 
 *** helm swoop
 #+BEGIN_SRC emacs-lisp
 (use-package helm-swoop
-             :ensure t
-             :bind
-             (("C-S-s" . helm-swoop)
-              ("M-i" . helm-swoop)
-              ("M-s s" . helm-swoop)
-              ("M-s M-s" . helm-swoop)
-              ("M-I" . helm-swoop-back-to-last-point)
-              ("C-c M-i" . helm-multi-swoop)
-              ("C-x M-i" . helm-multi-swoop-all)
-              )
-             :config
-             (progn
-               (define-key ispellearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
-               (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)))
+  :ensure t
+  :bind
+  (("M-i"     . helm-swoop)
+   ("M-I"     . helm-swoop-back-to-last-point)
+   ("C-c M-i" . helm-multi-swoop)
+   ("C-x M-i" . helm-multi-swoop-all))
+  :config
+  (progn
+    (define-key ispellearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
+    (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)))
 #+END_SRC
 
 *** eopengrok
 #+BEGIN_SRC emacs-lisp
 (use-package eopengrok
-             :defer t
-             :ensure t
-             :init
-             (progn
-               (setq eopengrok-jar   "/Users/youngker/Projects/opengrok-0.12.1.5/lib/opengrok.jar")
-               (setq eopengrok-ctags "/usr/local/bin/ctags"))
-             :bind (("C-c s I" . eopengrok-make-index)
-                    ("C-c s d" . eopengrok-find-definition)
-                    ("C-c s f" . eopengrok-find-file)
-                    ("C-c s s" . eopengrok-find-reference)
-                    ("C-c s t" . eopengrok-find-text)
-                    ("C-c s h" . eopengrok-find-history)
-                    ("C-c s b" . eopengrok-resume)))
+  :defer t
+  :ensure t
+  :init
+  (progn
+    (setq eopengrok-jar   "/Users/youngker/Projects/opengrok-0.12.1.5/lib/opengrok.jar")
+    (setq eopengrok-ctags "/usr/local/bin/ctags"))
+  :bind (("C-c s I" . eopengrok-make-index)
+         ("C-c s d" . eopengrok-find-definition)
+         ("C-c s f" . eopengrok-find-file)
+         ("C-c s s" . eopengrok-find-reference)
+         ("C-c s t" . eopengrok-find-text)
+         ("C-c s h" . eopengrok-find-history)
+         ("C-c s b" . eopengrok-resume)))
 #+END_SRC
 
 *** helm-codesearch
 #+BEGIN_SRC emacs-lisp
 (use-package helm-codesearch
-             :defer t
-             :ensure t
-             :bind (("C-c h f" . helm-codesearch-find-file)
-                    ("C-c h t" . helm-codesearch-find-pattern)
-                    ("C-c h I" . helm-codesearch-create-csearchindex)))
+  :defer t
+  :ensure t
+  :bind (("C-c h f" . helm-codesearch-find-file)
+         ("C-c h t" . helm-codesearch-find-pattern)
+         ("C-c h I" . helm-codesearch-create-csearchindex)))
 #+END_SRC
 
 *** elogcat
 #+BEGIN_SRC emacs-lisp
 (use-package elogcat
-             :defer t
-             :ensure t)
+  :defer t
+  :ensure t)
 #+END_SRC
 
 *** ido-vertical-mode
 #+BEGIN_SRC emacs-lisp
 (use-package ido-vertical-mode
-             :ensure t
-             :diminish ido-vertical-mode
-             :init
-             (progn
-               (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
-               (ido-vertical-mode)))
+  :ensure t
+  :diminish ido-vertical-mode
+  :init
+  (progn
+    (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
+    (ido-vertical-mode)))
 #+END_SRC
 
 ** Language
 *** clojure
 #+BEGIN_SRC emacs-lisp
 (use-package clj-refactor
-             :ensure t
-             :init
-             (progn
-               (add-hook 'clojure-mode-hook
-                         (lambda ()
-                           (clj-refactor-mode 1)
-                           (cljr-add-keybindings-with-prefix "C-c C-m")))))
+  :ensure t
+  :init
+  (progn
+    (add-hook 'clojure-mode-hook
+              (lambda ()
+                (clj-refactor-mode 1)
+                (cljr-add-keybindings-with-prefix "C-c C-m")))))
 #+END_SRC
