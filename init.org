@@ -34,9 +34,9 @@
 #+BEGIN_SRC emacs-lisp
 (cond
  ((eq window-system 'x)
-  (set-face-attribute 'default nil :font "DejaVu Sans Mono 13"))
+  (set-face-attribute 'default nil :font "DejaVu Sans Mono 11"))
  ((eq window-system 'w32)
-  (set-face-attribute 'default nil :font "Consolas bold 15"))
+  (set-face-attribute 'default nil :font "Consolas bold 11"))
  ((eq window-system 'ns)
   (set-face-attribute 'default nil :font "Monaco 13")))
 #+END_SRC
@@ -46,7 +46,7 @@
 (when window-system
   (tooltip-mode -1)
   (tool-bar-mode -1)
-  (menu-bar-mode 1)
+  (menu-bar-mode -1)
   (scroll-bar-mode -1))
 #+END_SRC
 
@@ -116,8 +116,7 @@
 (use-package helm-descbinds
   :defer t
   :ensure t
-  :bind (("C-c h b" . helm-descbinds)
-         ("C-c h w" . helm-descbinds)))
+  :bind (("C-c h w" . helm-descbinds)))
 #+END_SRC
 
 *** helm swoop
