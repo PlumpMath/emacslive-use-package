@@ -5,25 +5,51 @@
 
 ** package source
 #+BEGIN_SRC emacs-lisp
-(package-initialize nil)
+(require 'package)
+
 (unless (assoc-default "melpa" package-archives)
   (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t))
+
+(package-initialize)
 #+END_SRC
 
 ** use-package
 #+BEGIN_SRC emacs-lisp
+(unless package-archive-contents
+  (package-refresh-contents))
+
 (unless (package-installed-p 'use-package)
-  (package-refresh-contents)
   (package-install 'use-package))
-(setq use-package-verbose t)
+
+;(setq use-package-verbose t)
 (require 'use-package)
+
 (use-package auto-compile
-  :ensure t
-  :config (auto-compile-on-load-mode))
-(setq load-prefer-newer t)
+             :ensure t
+             :config (auto-compile-on-load-mode))
+
+;(setq load-prefer-newer t)
 #+END_SRC
 
 ** appearance
+*** theme
+#+BEGIN_SRC emacs-lisp
+(deftheme default-black
+  "Automatically created 2013-05-20.")
+
+(custom-theme-set-faces
+ 'default-black
+ '(default ((t (:inherit nil :stipple nil :background "Black" :foreground "White" :inverse-video nil :box nil :strike-t*hrough nil :overline nil :underline nil :slant normal :weight normal :width normal :height 105))))
+ '(highlight ((((class color) (min-colors 88) (background dark)) (:background "#111111"))))
+ '(region ((nil (:background "#464740"))))
+ '(hl-line ((nil (:background "#222222"))))
+ '(yas-field-highlight-face ((nil (:background "#333399"))))
+ '(js2-function-param-face ((t (:foreground "LightGoldenrod"))))
+ '(font-lock-warning-face ((nil (:foreground "#ff6666"))))
+ '(show-paren-match ((nil (:background "#333399"))))
+ '(show-paren-mismatch ((((class color)) (:background "red")))))
+#+END_SRC
+
 *** silence
 #+BEGIN_SRC emacs-lisp
 (setq visible-bell nil)
@@ -98,13 +124,9 @@
           helm-recentf-fuzzy-match    t
           helm-semantic-fuzzy-match   t
           helm-imenu-fuzzy-match      t)
-    (global-unset-key (kbd "C-x c"))
-    (helm-mode))
+    (global-unset-key (kbd "C-x c")))
   :bind (("C-c h"     . helm-command-prefix)
-         ("C-x C-f"   . helm-find-files)
-         ("C-x b"     . helm-buffers-list)
          ("M-y"       . helm-show-kill-ring)
-         ("M-x"       . helm-M-x)
          ("C-x C-i"   . helm-imenu)
          ("C-c h o"   . helm-occur)
          ("C-x f"     . helm-recentf)
@@ -168,8 +190,32 @@
   :defer t
   :ensure t)
 #+END_SRC
-
-*** ido-vertical-mode
+*** ido
+ido
+#+BEGIN_SRC emacs-lisp
+(use-package ido
+  :ensure t
+  :init
+  (setq ido-enable-prefix nil
+        ido-enable-flex-matching t
+        ido-case-fold nil
+        ido-auto-merge-work-directories-length -1
+        ido-create-new-buffer 'always
+        ido-use-filename-at-point nil
+        ido-max-prospects 10)  
+  :config
+  (ido-mode t))
+#+END_SRC
+flx-ido
+#+BEGIN_SRC emacs-lisp
+(use-package flx-ido
+  :ensure t
+  :init
+  (setq ido-use-faces nil)
+  :config
+  (flx-ido-mode 1))
+#+END_SRC
+ido-vertical-mode
 #+BEGIN_SRC emacs-lisp
 (use-package ido-vertical-mode
   :ensure t
@@ -179,7 +225,16 @@
     (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
     (ido-vertical-mode)))
 #+END_SRC
-
+*** smex
+#+BEGIN_SRC emacs-lisp
+(use-package smex
+  :ensure t
+  :init
+  (smex-initialize)
+  :bind 
+  (("M-x" . smex)
+   ("M-X" . smex-major-mode-commands)))
+#+END_SRC
 ** Language
 *** clojure
 #+BEGIN_SRC emacs-lisp
