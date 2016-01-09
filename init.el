@@ -1,52 +1,104 @@
-(defmacro with-timer (&rest forms)
-  "Run the given FORMS, counting and displaying the elapsed time."
-  (declare (indent 0))
-  (let ((nowvar (make-symbol "now"))
-        (body `(progn ,@forms)))
-    `(let ((,nowvar (current-time)))
-       (prog1 ,body
-         (let ((elapsed (float-time (time-subtract (current-time) ,nowvar))))
-           (when (> elapsed 0.001)
-             (message "spent (%.3fs)" elapsed)))))))
+;; -*- mode: emacs-lisp -*-
 
-(let (errors)
-  (with-temp-buffer
-    (insert-file "~/.emacs.d/init.org")
-    (goto-char (point-min))
-    (search-forward "\n* Init")
-    (while (not (eobp))
-      (forward-line 1)
-      (cond
-       ;; skip headers marked as TODO
-       ((looking-at "^\\(\\*+\\) TODO +.*$")
-        (search-forward (format "\n%s " (match-string 1))))
-       ;; report headers
-       ((looking-at "\\*\\{2,3\\} +.*$")
-        (message "%s" (match-string 0)))
-       ;; evaluate code blocks
-       ((looking-at "^#\\+BEGIN_SRC +emacs-lisp.*$")
-        (let (src-beg src-end)
-          (condition-case error
-              (progn
-                (setq src-beg (match-end 0))
-                (search-forward "\n#+END_SRC")
-                (setq src-end (match-beginning 0))
-                (with-timer (eval-region src-beg src-end)))
-            (error
-             (push (format "%s for:\n%s\n\n---\n"
-                           (error-message-string error)
-                           (buffer-substring src-beg src-end))
-                   errors)))))
-       ;; finish on the next level-1 header
-       ((looking-at "^\\* ")
-        (goto-char (point-max))))))
-  (when errors
-    (with-current-buffer (get-buffer-create "*init errors*")
-      (insert (format "%i error(s) found\n\n" (length errors)))
-      (dolist (error (nreverse errors))
-        (insert error "\n"))
-      (goto-char (point-min))
-      (special-mode))
-    (setq initial-buffer-choice (lambda () (get-buffer "*init errors*")))))
+(defun dotspacemacs/layers ()
+  (setq-default
+   dotspacemacs-distribution 'spacemacs
+   dotspacemacs-configuration-layer-path '()
+   dotspacemacs-configuration-layers
+   '(
+     auto-completion
+     better-defaults
+     c-c++
+     clojure
+     colors
+     emacs-lisp
+     git
+     github
+     go
+     html
+     java
+     markdown
+     org
+     (shell :variables
+            shell-default-height 30
+            shell-default-position 'bottom)
+     ;; osx
+     semantic
+     python
+     ;; spell-checking
+     syntax-checking
+     version-control
+     )
+   dotspacemacs-additional-packages
+   '(
+     helm-codesearch
+     )
+   dotspacemacs-excluded-packages '()
+   dotspacemacs-delete-orphan-packages t))
 
-(provide 'init-local)
+(defun dotspacemacs/init ()
+  (setq-default
+   dotspacemacs-elpa-https t
+   dotspacemacs-elpa-timeout 5
+   dotspacemacs-check-for-update t
+   dotspacemacs-editing-style 'hybrid
+   dotspacemacs-verbose-loading nil
+   dotspacemacs-startup-banner nil
+   dotspacemacs-startup-lists '(recents projects bookmarks)
+   dotspacemacs-startup-recent-list-size 5
+   dotspacemacs-themes '(spacemacs-dark
+                         spacemacs-light
+                         solarized-light
+                         solarized-dark
+                         leuven
+                         monokai
+                         zenburn)
+   dotspacemacs-colorize-cursor-according-to-state t
+   dotspacemacs-default-font '("Source Code Pro"
+                               :size 13
+                               :weight normal
+                               :width normal
+                               :powerline-scale 1.1)
+   dotspacemacs-leader-key "SPC"
+   dotspacemacs-emacs-leader-key "M-m"
+   dotspacemacs-major-mode-leader-key ","
+   dotspacemacs-major-mode-emacs-leader-key "C-M-m"
+   dotspacemacs-distinguish-gui-tab nil
+   dotspacemacs-command-key ":"
+   dotspacemacs-remap-Y-to-y$ t
+   dotspacemacs-default-layout-name "Default"
+   dotspacemacs-display-default-layout nil
+   dotspacemacs-auto-resume-layouts nil
+   dotspacemacs-auto-save-file-location 'cache
+   dotspacemacs-max-rollback-slots 5
+   dotspacemacs-use-ido nil
+   dotspacemacs-helm-resize nil
+   dotspacemacs-helm-no-header nil
+   dotspacemacs-helm-position 'bottom
+   dotspacemacs-enable-paste-micro-state nil
+   dotspacemacs-which-key-delay 0.4
+   dotspacemacs-which-key-position 'bottom
+   dotspacemacs-loading-progress-bar t
+   dotspacemacs-fullscreen-at-startup nil
+   dotspacemacs-fullscreen-use-non-native nil
+   dotspacemacs-maximized-at-startup nil
+   dotspacemacs-active-transparency 90
+   dotspacemacs-inactive-transparency 90
+   dotspacemacs-mode-line-unicode-symbols t
+   dotspacemacs-smooth-scrolling t
+   dotspacemacs-line-numbers t
+   dotspacemacs-smartparens-strict-mode nil
+   dotspacemacs-highlight-delimiters 'all
+   dotspacemacs-persistent-server nil
+   dotspacemacs-search-tools '("ag" "pt" "ack" "grep")
+   dotspacemacs-default-package-repository nil
+   dotspacemacs-whitespace-cleanup 'changed
+   ))
+
+(defun dotspacemacs/user-init ()
+  )
+
+(defun dotspacemacs/user-config ()
+  (setq-default
+   powerline-default-separator 'arrow)
+  )
