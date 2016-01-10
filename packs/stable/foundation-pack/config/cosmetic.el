@@ -39,6 +39,7 @@
    ((eq system-type 'darwin)
     (live-set-default-font font-string))))
 
+;; set font
 (cond
  ((eq window-system 'x)
   (live-set-default-darwin-font "DejaVu Sans Mono 11"))
@@ -46,6 +47,12 @@
   (live-set-default-darwin-font "Consolas bold 11"))
  ((memq window-system '(mac ns))
   (live-set-default-darwin-font "Menlo 13")))
+
+;; title format
+(setq frame-title-format
+      '((:eval (if (buffer-file-name)
+                   (abbreviate-file-name (buffer-file-name))
+                 "%b"))))
 
 ;; make fringe smaller
 (if (fboundp 'fringe-mode)
