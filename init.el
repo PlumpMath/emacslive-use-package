@@ -1,104 +1,323 @@
-;; -*- mode: emacs-lisp -*-
+;; Emacs LIVE
+;;
+;; This is where everything starts. Do you remember this place?
+;; It remembers you...
 
-(defun dotspacemacs/layers ()
-  (setq-default
-   dotspacemacs-distribution 'spacemacs
-   dotspacemacs-configuration-layer-path '()
-   dotspacemacs-configuration-layers
-   '(
-     auto-completion
-     better-defaults
-     c-c++
-     clojure
-     colors
-     emacs-lisp
-     git
-     github
-     go
-     html
-     java
-     markdown
-     org
-     (shell :variables
-            shell-default-height 30
-            shell-default-position 'bottom)
-     ;; osx
-     semantic
-     python
-     ;; spell-checking
-     syntax-checking
-     version-control
-     )
-   dotspacemacs-additional-packages
-   '(
-     helm-codesearch
-     )
-   dotspacemacs-excluded-packages '()
-   dotspacemacs-delete-orphan-packages t))
+(setq live-ascii-art-logo ";;
+;;     MM\"\"\"\"\"\"\"\"`M
+;;     MM  mmmmmmmM
+;;     M`      MMMM 88d8b.d8b. .d8888b. .d8888b. .d8888b.
+;;     MM  MMMMMMMM 88''88'`88 88'  `88 88'  `\"\" Y8ooooo.
+;;     MM  MMMMMMMM 88  88  88 88.  .88 88.  ...       88
+;;     MM        .M dP  dP  dP `88888P8 '88888P' '88888P'
+;;     MMMMMMMMMMMM
+;;
+;;         M\"\"MMMMMMMM M\"\"M M\"\"MMMMM\"\"M MM\"\"\"\"\"\"\"\"`M
+;;         M  MMMMMMMM M  M M  MMMMM  M MM  mmmmmmmM
+;;         M  MMMMMMMM M  M M  MMMMP  M M`      MMMM
+;;         M  MMMMMMMM M  M M  MMMM' .M MM  MMMMMMMM
+;;         M  MMMMMMMM M  M M  MMP' .MM MM  MMMMMMMM
+;;         M         M M  M M     .dMMM MM        .M
+;;         MMMMMMMMMMM MMMM MMMMMMMMMMM MMMMMMMMMMMM ")
 
-(defun dotspacemacs/init ()
-  (setq-default
-   dotspacemacs-elpa-https t
-   dotspacemacs-elpa-timeout 5
-   dotspacemacs-check-for-update t
-   dotspacemacs-editing-style 'hybrid
-   dotspacemacs-verbose-loading nil
-   dotspacemacs-startup-banner nil
-   dotspacemacs-startup-lists '(recents projects bookmarks)
-   dotspacemacs-startup-recent-list-size 5
-   dotspacemacs-themes '(spacemacs-dark
-                         spacemacs-light
-                         solarized-light
-                         solarized-dark
-                         leuven
-                         monokai
-                         zenburn)
-   dotspacemacs-colorize-cursor-according-to-state t
-   dotspacemacs-default-font '("Source Code Pro"
-                               :size 13
-                               :weight normal
-                               :width normal
-                               :powerline-scale 1.1)
-   dotspacemacs-leader-key "SPC"
-   dotspacemacs-emacs-leader-key "M-m"
-   dotspacemacs-major-mode-leader-key ","
-   dotspacemacs-major-mode-emacs-leader-key "C-M-m"
-   dotspacemacs-distinguish-gui-tab nil
-   dotspacemacs-command-key ":"
-   dotspacemacs-remap-Y-to-y$ t
-   dotspacemacs-default-layout-name "Default"
-   dotspacemacs-display-default-layout nil
-   dotspacemacs-auto-resume-layouts nil
-   dotspacemacs-auto-save-file-location 'cache
-   dotspacemacs-max-rollback-slots 5
-   dotspacemacs-use-ido nil
-   dotspacemacs-helm-resize nil
-   dotspacemacs-helm-no-header nil
-   dotspacemacs-helm-position 'bottom
-   dotspacemacs-enable-paste-micro-state nil
-   dotspacemacs-which-key-delay 0.4
-   dotspacemacs-which-key-position 'bottom
-   dotspacemacs-loading-progress-bar t
-   dotspacemacs-fullscreen-at-startup nil
-   dotspacemacs-fullscreen-use-non-native nil
-   dotspacemacs-maximized-at-startup nil
-   dotspacemacs-active-transparency 90
-   dotspacemacs-inactive-transparency 90
-   dotspacemacs-mode-line-unicode-symbols t
-   dotspacemacs-smooth-scrolling t
-   dotspacemacs-line-numbers t
-   dotspacemacs-smartparens-strict-mode nil
-   dotspacemacs-highlight-delimiters 'all
-   dotspacemacs-persistent-server nil
-   dotspacemacs-search-tools '("ag" "pt" "ack" "grep")
-   dotspacemacs-default-package-repository nil
-   dotspacemacs-whitespace-cleanup 'changed
-   ))
+(message (concat "\n\n" live-ascii-art-logo "\n\n"))
 
-(defun dotspacemacs/user-init ()
-  )
+(add-to-list 'command-switch-alist
+             (cons "--live-safe-mode"
+                   (lambda (switch)
+                     nil)))
 
-(defun dotspacemacs/user-config ()
-  (setq-default
-   powerline-default-separator 'arrow)
-  )
+(setq live-safe-modep
+      (if (member "--live-safe-mode" command-line-args)
+          "debug-mode-on"
+        nil))
+
+(setq initial-scratch-message "
+;; I'm sorry, Emacs Live failed to start correctly.
+;; Hopefully the issue will be simple to resolve.
+;;
+;; First up, could you try running Emacs Live in safe mode:
+;;
+;;    emacs --live-safe-mode
+;;
+;; This will only load the default packs. If the error no longer occurs
+;; then the problem is probably in a pack that you are loading yourself.
+;; If the problem still exists, it may be a bug in Emacs Live itself.
+;;
+;; In either case, you should try starting Emacs in debug mode to get
+;; more information regarding the error:
+;;
+;;    emacs --debug-init
+;;
+;; Please feel free to raise an issue on the Gihub tracker:
+;;
+;;    https://github.com/overtone/emacs-live/issues
+;;
+;; Alternatively, let us know in the mailing list:
+;;
+;;    http://groups.google.com/group/emacs-live
+;;
+;; Good luck, and thanks for using Emacs Live!
+;;
+;;                _.-^^---....,,--
+;;            _--                  --_
+;;           <          SONIC         >)
+;;           |       BOOOOOOOOM!       |
+;;            \._                   _./
+;;               ```--. . , ; .--'''
+;;                     | |   |
+;;                  .-=||  | |=-.
+;;                  `-=#$%&%$#=-'
+;;                     | ;  :|
+;;            _____.,-#%&$@%#&#~,._____
+;;      May these instructions help you raise
+;;                  Emacs Live
+;;                from the ashes
+")
+
+(setq live-supported-emacsp t)
+
+(when (version< emacs-version "24.4")
+  (setq live-supported-emacsp nil)
+  (setq initial-scratch-message (concat "
+;;                _.-^^---....,,--
+;;            _--                  --_
+;;           <          SONIC         >)
+;;           |       BOOOOOOOOM!       |
+;;            \._                   _./
+;;               ```--. . , ; .--'''
+;;                     | |   |
+;;                  .-=||  | |=-.
+;;                  `-=#$%&%$#=-'
+;;                     | ;  :|
+;;            _____.,-#%&$@%#&#~,._____
+;;
+;; I'm sorry, Emacs Live is only supported on Emacs 24.4+.
+;;
+;; You are running: " emacs-version "
+;;
+;; Please upgrade your Emacs for full compatibility.
+;;
+;; Latest versions of Emacs can be found here:
+;;
+;; OS X GUI     - http://emacsformacosx.com/
+;; OS X Console - via homebrew (http://mxcl.github.com/homebrew/)
+;;                brew install emacs
+;; Windows      - http://alpha.gnu.org/gnu/emacs/windows/
+;; Linux        - Consult your package manager or compile from source
+
+"))
+  (let* ((old-file (concat (file-name-as-directory "~") ".emacs-old.el")))
+    (if (file-exists-p old-file)
+      (load-file old-file)
+      (error (concat "Oops - your emacs isn't supported. Emacs Live only works on Emacs 24.4+ and you're running version: " emacs-version ". Please upgrade your Emacs and try again, or define ~/.emacs-old.el for a fallback")))))
+
+(let ((emacs-live-directory (getenv "EMACS_LIVE_DIR")))
+  (when emacs-live-directory
+    (setq user-emacs-directory emacs-live-directory)))
+
+(when live-supported-emacsp
+;; Store live base dirs, but respect user's choice of `live-root-dir'
+;; when provided.
+(setq live-root-dir (if (boundp 'live-root-dir)
+                          (file-name-as-directory live-root-dir)
+                        (if (file-exists-p (expand-file-name "manifest.el" user-emacs-directory))
+                            user-emacs-directory)
+                        (file-name-directory (or
+                                              load-file-name
+                                              buffer-file-name))))
+
+(setq
+ live-tmp-dir      (file-name-as-directory (concat live-root-dir "tmp"))
+ live-etc-dir      (file-name-as-directory (concat live-root-dir "etc"))
+ live-pscratch-dir (file-name-as-directory (concat live-tmp-dir  "pscratch"))
+ live-lib-dir      (file-name-as-directory (concat live-root-dir "lib"))
+ live-packs-dir    (file-name-as-directory (concat live-root-dir "packs"))
+ live-autosaves-dir(file-name-as-directory (concat live-tmp-dir  "autosaves"))
+ live-backups-dir  (file-name-as-directory (concat live-tmp-dir  "backups"))
+ live-custom-dir   (file-name-as-directory (concat live-etc-dir  "custom"))
+ live-load-pack-dir nil
+ live-disable-zone nil)
+
+;; create tmp dirs if necessary
+(make-directory live-etc-dir t)
+(make-directory live-tmp-dir t)
+(make-directory live-autosaves-dir t)
+(make-directory live-backups-dir t)
+(make-directory live-custom-dir t)
+(make-directory live-pscratch-dir t)
+
+;; Load manifest
+(load-file (concat live-root-dir "manifest.el"))
+
+;; load live-lib
+(load-file (concat live-lib-dir "live-core.el"))
+
+;;default packs
+(let* ((pack-names '("foundation-pack"
+                     "colour-pack"
+                     "lang-pack"
+                     "power-pack"
+                     "git-pack"
+                     "org-pack"
+                     "clojure-pack"
+                     "bindings-pack"))
+       (live-dir (file-name-as-directory "stable"))
+       (dev-dir  (file-name-as-directory "dev")))
+  (setq live-packs (mapcar (lambda (p) (concat live-dir p)) pack-names) )
+  (setq live-dev-pack-list (mapcar (lambda (p) (concat dev-dir p)) pack-names) ))
+
+;; Helper fn for loading live packs
+
+(defun live-version ()
+  (interactive)
+  (if (called-interactively-p 'interactive)
+      (message "%s" (concat "This is Emacs Live " live-version))
+    live-version))
+
+;; Load `~/.emacs-live.el`. This allows you to override variables such
+;; as live-packs (allowing you to specify pack loading order)
+;; Does not load if running in safe mode
+(let* ((pack-file (concat (file-name-as-directory "~") ".emacs-live.el")))
+  (if (and (file-exists-p pack-file) (not live-safe-modep))
+      (load-file pack-file)))
+
+;; elpa
+(require 'package)
+(package-initialize)
+
+(setq package-archives
+      '(("gnu" . "http://elpa.gnu.org/packages/")
+        ("org" . "http://orgmode.org/elpa/")
+        ("melpa" . "https://melpa.org/packages/")
+        ("melpa-stable" . "https://stable.melpa.org/packages/")))
+
+(add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
+
+(let* ((packages
+        '(ac-cider
+          ace-jump-mode
+          actionscript-mode
+          align-cljlet
+          apache-mode
+          auto-compile
+          auto-complete
+          browse-kill-ring
+          buffer-move
+          cider
+          cider-eval-sexp-fu
+          clj-refactor
+          clojure-mode
+          color-theme
+          dash
+          edn
+          elisp-slime-nav
+          enh-ruby-mode
+          epl
+          eval-sexp-fu
+          expand-region
+          find-file-in-project
+          floobits
+          flx
+          flx-ido
+          fuzzy
+          gh
+          gist
+          git-gutter
+          gitattributes-mode
+          gitconfig-mode
+          gitignore-mode
+          glsl-mode
+          haskell-mode
+          highlight
+          highlight-tail
+          hydra
+          ibuffer-git
+          idomenu
+          inf-ruby
+          inflections
+          iy-go-to-char
+          js2-mode
+          key-chord
+          lively
+          logito
+          magit
+          markdown-mode
+          mic-paren
+          multiple-cursors
+          paredit
+          pcache
+          peg
+          pkg-info
+          popup
+          popwin
+          queue
+          rainbow-delimiters
+          refheap
+          ruby-dev
+          s
+          scratch
+          seq
+          smex
+          smooth-scrolling
+          spinner
+          try
+          undo-tree
+          uuid
+          volatile-highlights
+          wc-mode
+          win-switch
+          window-number
+          yaml-mode
+          yasnippet))
+       (packages (remove-if 'package-installed-p packages)))
+  (when packages
+    (ignore-errors (package-refresh-contents)
+                   (mapcar 'package-install packages)
+                   (when (memq window-system '(mac ns))
+                     (package-install 'exec-path-from-shell)))))
+
+;; Load all packs - Power Extreme!
+(mapc (lambda (pack-dir)
+          (live-load-pack pack-dir))
+        (live-pack-dirs))
+
+(setq live-welcome-messages
+      (if (live-user-first-name-p)
+          (list (concat "Hello " (live-user-first-name) ", somewhere in the world the sun is shining for you right now.")
+                (concat "Hello " (live-user-first-name) ", it's lovely to see you again. I do hope that you're well.")
+                (concat (live-user-first-name) ", turn your head towards the sun and the shadows will fall behind you.")
+                )
+        (list  "Hello, somewhere in the world the sun is shining for you right now."
+               "Hello, it's lovely to see you again. I do hope that you're well."
+               "Turn your head towards the sun and the shadows will fall behind you.")))
+
+
+(defun live-welcome-message ()
+  (nth (random (length live-welcome-messages)) live-welcome-messages))
+
+(when live-supported-emacsp
+  (setq initial-scratch-message (concat live-ascii-art-logo " Version " live-version
+                                                                (if live-safe-modep
+                                                                    "
+;;                                                     --*SAFE MODE*--"
+                                                                  "
+;;"
+                                                                  ) "
+;;           http://github.com/overtone/emacs-live
+;;
+;; "                                                      (live-welcome-message) "
+
+")))
+)
+
+(if (not live-disable-zone)
+    (add-hook 'term-setup-hook 'zone))
+
+(if (not custom-file)
+    (setq custom-file (concat live-custom-dir "custom-configuration.el")))
+(when (file-exists-p custom-file)
+  (load custom-file))
+
+(message "\n\n Pack loading completed. Your Emacs is Live...\n\n")
+(put 'downcase-region 'disabled nil)
