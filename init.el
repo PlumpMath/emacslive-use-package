@@ -268,7 +268,7 @@
           volatile-highlights
           wc-mode
           win-switch
-          window-number
+          window-numbering
           yaml-mode
           yasnippet))
        (packages (remove-if 'package-installed-p packages)))
