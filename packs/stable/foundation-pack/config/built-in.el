@@ -45,7 +45,8 @@
       next-error-highlight-no-select t)
 
 ;;set all coding systems to utf-8
-(set-language-environment 'utf-8)
+;(set-language-environment 'utf-8)
+(set-language-environment "Korean")
 (set-default-coding-systems 'utf-8)
 (setq locale-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)

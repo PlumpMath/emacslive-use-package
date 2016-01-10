@@ -12,6 +12,7 @@
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+(if (fboundp 'tooltip-mode) (tooltip-mode -1))
 
 ;remove bells
 (setq ring-bell-function 'ignore)
@@ -27,7 +28,7 @@
                      (eq 'font (car x)))
                    default-frame-alist))
   (cond
-   ((member (window-system) '(x w32 ns))
+   ((member (window-system) '(x w32 mac ns))
     (add-to-list 'default-frame-alist (cons 'font font-string))
     (set-default-font font-string t t))))
 
@@ -38,7 +39,13 @@
    ((eq system-type 'darwin)
     (live-set-default-font font-string))))
 
-(live-set-default-darwin-font "Menlo-12")
+(cond
+ ((eq window-system 'x)
+  (live-set-default-darwin-font "DejaVu Sans Mono 11"))
+ ((eq window-system 'w32)
+  (live-set-default-darwin-font "Consolas bold 11"))
+ ((memq window-system '(mac ns))
+  (live-set-default-darwin-font "Menlo 13")))
 
 ;; make fringe smaller
 (if (fboundp 'fringe-mode)

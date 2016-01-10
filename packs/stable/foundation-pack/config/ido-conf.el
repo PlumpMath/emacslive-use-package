@@ -11,6 +11,9 @@
 
 (icomplete-mode 1)
 
+(setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
+(ido-vertical-mode)
+
 (defvar live-symbol-names)
 (defvar live-name-and-pos)
 

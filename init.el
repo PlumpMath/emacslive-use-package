@@ -234,6 +234,7 @@
           hydra
           ibuffer-git
           idomenu
+          ido-vertical-mode
           inf-ruby
           inflections
           iy-go-to-char
