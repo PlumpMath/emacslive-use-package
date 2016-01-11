@@ -1,3 +1,4 @@
-(require 'zone)
-
-(setq zone-programs [zone-pgm-putz-with-case])
+(use-package zone
+  :defer t
+  :init
+  (setq zone-programs [zone-pgm-putz-with-case]))

@@ -1,18 +1,33 @@
-(require 'queue)
-(require 'seq)
-(require 'dash)
+(use-package queue
+  :defer t)
+
+(use-package seq
+  :defer t)
+
+(use-package dash
+  :defer t)
 
 (when (not (or (eq 'ms-dos system-type)
                (eq 'windows-nt system-type)))
   (live-load-config-file "auto-compile-conf.el"))
 
-(require 'dircolors)
-(require 'smooth-scrolling)
-(require 'buffer-move)
-(require 'find-file-in-project)
-(require 's)
-(require 'epl)
-(require 'pkg-info)
+(use-package dircolors
+  :ensure nil
+  :defer t
+  :load-path (lambda () (live-pack-lib-dir)))
+
+(use-package smooth-scrolling
+  :defer t)
+(use-package buffer-move
+  :defer t)
+(use-package find-file-in-project
+  :defer t)
+(use-package s
+  :defer t)
+(use-package epl
+  :defer t)
+(use-package pkg-info
+  :defer t)
 
 (live-load-config-file "backup-dir-conf.el")
 (live-load-config-file "util-fns.el")

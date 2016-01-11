@@ -183,8 +183,7 @@
       (load-file pack-file)))
 
 ;; elpa
-(require 'package)
-(package-initialize)
+(package-initialize nil)
 
 (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -192,91 +191,19 @@
         ("melpa" . "https://melpa.org/packages/")
         ("melpa-stable" . "https://stable.melpa.org/packages/")))
 
-(add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
-
-(let* ((packages
-        '(ac-cider
-          ace-jump-mode
-          actionscript-mode
-          align-cljlet
-          apache-mode
-          auto-compile
-          auto-complete
-          browse-kill-ring
-          buffer-move
-          cider
-          cider-eval-sexp-fu
-          clj-refactor
-          clojure-mode
-          color-theme
-          dash
-          edn
-          elisp-slime-nav
-          enh-ruby-mode
-          epl
-          eval-sexp-fu
-          expand-region
-          find-file-in-project
-          floobits
-          flx
-          flx-ido
-          fuzzy
-          gh
-          gist
-          git-gutter
-          gitattributes-mode
-          gitconfig-mode
-          gitignore-mode
-          glsl-mode
-          haskell-mode
-          highlight
-          highlight-tail
-          hydra
-          ibuffer-git
-          idomenu
-          ido-vertical-mode
-          inf-ruby
-          inflections
-          iy-go-to-char
-          js2-mode
-          key-chord
-          lively
-          logito
-          magit
-          markdown-mode
-          mic-paren
-          multiple-cursors
-          paredit
-          pcache
-          peg
-          pkg-info
-          popup
-          popwin
-          queue
-          rainbow-delimiters
-          refheap
-          ruby-dev
-          s
-          scratch
-          seq
-          smex
-          smooth-scrolling
-          spinner
-          try
-          undo-tree
-          uuid
-          volatile-highlights
-          wc-mode
-          win-switch
-          window-numbering
-          yaml-mode
-          yasnippet))
-       (packages (remove-if 'package-installed-p packages)))
-  (when packages
-    (ignore-errors (package-refresh-contents)
-                   (mapcar 'package-install packages)
-                   (when (memq window-system '(mac ns))
-                     (package-install 'exec-path-from-shell)))))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(setq use-package-verbose t)
+(require 'use-package)
+(use-package auto-compile
+  :ensure t
+  :config
+  (auto-compile-on-load-mode)
+  (setq use-package-always-ensure t))
+                                        ;(add-hook 'emacs-lisp-mode-hook 'aggressive-indent-mode)
+                                        ;(aggressive-indent-mode)
+;(add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
 
 ;; Load all packs - Power Extreme!
 (mapc (lambda (pack-dir)

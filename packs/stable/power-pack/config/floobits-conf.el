@@ -1,1 +1,2 @@
-(require 'floobits)
+(use-package floobits
+  :defer t)

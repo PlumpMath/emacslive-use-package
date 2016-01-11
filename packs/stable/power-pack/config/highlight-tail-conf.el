@@ -1,1 +1,2 @@
-(require 'highlight-tail)
+(use-package highlight-tail
+  :defer t)

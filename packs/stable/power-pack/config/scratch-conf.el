@@ -1,1 +1,2 @@
-(require 'scratch)
+(use-package scratch
+  :defer t)

@@ -1,9 +1,14 @@
 ;;use file path to ensure buffer name uniqueness
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'forward)
-(setq uniquify-separator "/")
-(setq uniquify-after-kill-buffer-p t)
-(setq uniquify-ignore-buffers-re "^\\*")
+(use-package uniquify
+  :ensure nil
+  :defer t
+  :load-path (lambda () (live-pack-lib-dir))
+  :init
+  (progn
+    (setq uniquify-buffer-name-style 'forward)
+    (setq uniquify-separator "/")
+    (setq uniquify-after-kill-buffer-p t)
+    (setq uniquify-ignore-buffers-re "^\\*")))
 
 ;;store history of recently opened files
 (require 'recentf)

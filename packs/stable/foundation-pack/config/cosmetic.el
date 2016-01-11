@@ -42,9 +42,9 @@
 ;; set font
 (cond
  ((eq window-system 'x)
-  (live-set-default-darwin-font "DejaVu Sans Mono 11"))
+  (live-set-default-font "DejaVu Sans Mono 11"))
  ((eq window-system 'w32)
-  (live-set-default-darwin-font "Consolas bold 11"))
+  (live-set-default-font "Consolas bold 11"))
  ((memq window-system '(mac ns))
   (live-set-default-darwin-font "Menlo 13")))
 

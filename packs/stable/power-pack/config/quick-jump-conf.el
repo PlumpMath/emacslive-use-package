@@ -1,2 +1,4 @@
-(require 'quick-jump)
-(quick-jump-default-keybinding)
+(use-package quick-jump
+  :defer t
+  :init
+  (quick-jump-default-keybinding))

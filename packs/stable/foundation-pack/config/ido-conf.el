@@ -1,30 +1,31 @@
-(require 'idomenu)
-(require 'flx-ido)
+(use-package idomenu
+  :defer t)
 
-(ido-mode t)
-(flx-ido-mode 1)
-(setq ido-enable-prefix nil
-      ido-create-new-buffer 'always
-      ido-max-prospects 10
-      ido-default-file-method 'selected-window
-      ido-everywhere 1)
+(use-package flx-ido
+  :defer t
+  :init
+  (progn
+    (ido-mode t)
+    (flx-ido-mode 1)
+    (icomplete-mode 1)
 
-(icomplete-mode 1)
+    (setq ido-enable-prefix nil
+          ido-create-new-buffer 'always
+          ido-max-prospects 10
+          ido-default-file-method 'selected-window
+          ido-everywhere 1)
 
-(setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
-(ido-vertical-mode)
+    (defvar live-symbol-names)
+    (defvar live-name-and-pos)
 
-(defvar live-symbol-names)
-(defvar live-name-and-pos)
+    (defun live-recentf-ido-find-file ()
+      "Find a recent file using ido."
+      (interactive)
+      (let ((file (ido-completing-read "Choose recent file: " recentf-list nil t)))
+        (when file
+          (find-file file))))
 
-(defun live-recentf-ido-find-file ()
-  "Find a recent file using ido."
-  (interactive)
-  (let ((file (ido-completing-read "Choose recent file: " recentf-list nil t)))
-    (when file
-      (find-file file))))
-
-(defun live-ido-goto-symbol (&optional symbol-list)
+    (defun live-ido-goto-symbol (&optional symbol-list)
       "Refresh imenu and jump to a place in the buffer using Ido."
       (interactive)
       (unless (featurep 'imenu)
@@ -70,4 +71,11 @@
             (unless (or (null position) (null name)
                         (string= (car imenu--rescan-item) name))
               (add-to-list 'live-symbol-names name)
-              (add-to-list 'live-name-and-pos (cons name position))))))))
+              (add-to-list 'live-name-and-pos (cons name position))))))))))
+
+(use-package ido-vertical-mode
+  :defer t
+  :init
+  (progn
+    (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
+    (ido-vertical-mode)))

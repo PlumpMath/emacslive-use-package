@@ -1,8 +1,13 @@
 ;; Live Power Pack
 
-(require 'mwe-log-commands)
-(require 'iy-go-to-char)
-(require 'lively)
+(use-package mwe-log-commands
+  :ensure nil
+  :defer t
+  :load-path (lambda () (live-pack-lib-dir)))
+(use-package iy-go-to-char
+  :defer t)
+(use-package lively
+  :defer t)
 
 (live-load-config-file "volatile-highlights-conf.el")
 (live-load-config-file "yasnippet-conf.el")

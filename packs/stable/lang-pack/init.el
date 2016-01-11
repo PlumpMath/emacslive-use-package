@@ -1,7 +1,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Language Pack
 
-(require 'apache-mode)
+(use-package apache-mode
+  :defer t)
 
 (live-load-config-file "yaml-conf.el")
 (live-load-config-file "ioke-conf.el")

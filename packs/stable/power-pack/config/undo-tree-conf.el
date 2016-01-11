@@ -1,3 +1,5 @@
 ;; The amazing undo tree
-(require 'undo-tree)
-(global-undo-tree-mode)
+(use-package undo-tree
+  :defer t
+  :init
+  (global-undo-tree-mode))

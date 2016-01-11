@@ -1,3 +1,4 @@
-(require 'wc-mode)
-
-(setq wc-modeline-format "WC[%tc, %tw]")
+(use-package wc-mode
+  :defer t
+  :init
+  (setq wc-modeline-format "WC[%tc, %tw]"))

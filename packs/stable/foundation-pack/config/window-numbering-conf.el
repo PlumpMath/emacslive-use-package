@@ -1,4 +1,4 @@
-;;window-numbering mode
-
-(require 'window-numbering)
-(window-numbering-mode)
+(use-package window-numbering
+  :defer t
+  :init
+  (window-numbering-mode))

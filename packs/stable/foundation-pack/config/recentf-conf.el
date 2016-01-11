@@ -1,17 +1,19 @@
-(require 'recentf)
+(use-package recentf
+  :defer t
+  :init
+  ;; 50 files ought to be enough.
+  (setq recentf-max-saved-items 50)
+  :config
+  (progn
+    ;; get rid of `find-file-read-only' and replace it with something
+    ;; more useful.
 
-;; get rid of `find-file-read-only' and replace it with something
-;; more useful.
+    ;; enable recent files mode.
+    (recentf-mode t)
 
-;; enable recent files mode.
-(recentf-mode t)
-
-                                        ; 50 files ought to be enough.
-(setq recentf-max-saved-items 50)
-
-(defun ido-recentf-open ()
-  "Use `ido-completing-read' to \\[find-file] a recent file"
-  (interactive)
-  (if (find-file (ido-completing-read "Find recent file: " recentf-list))
-      (message "Opening file...")
-        (message "Aborting")))
+    (defun ido-recentf-open ()
+      "Use `ido-completing-read' to \\[find-file] a recent file"
+      (interactive)
+      (if (find-file (ido-completing-read "Find recent file: " recentf-list))
+          (message "Opening file...")
+        (message "Aborting")))))

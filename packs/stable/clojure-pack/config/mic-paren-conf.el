@@ -1,4 +1,4 @@
-
-(require 'mic-paren)
-
-(paren-activate)
+(use-package mic-paren
+  :defer t
+  :init
+  (paren-activate))

@@ -1,9 +1,12 @@
 ;; Clojure Pack
-(require 'rainbow-delimiters)
-(require 'paredit)
-(require 'uuid)
-(require 'edn)
+(use-package rainbow-delimiters
+  :defer t)
 
+(use-package uuid
+  :defer t)
+
+(use-package edn
+  :defer t)
 
 (live-load-config-file "paredit-conf.el")
 (live-load-config-file "mic-paren-conf.el")
