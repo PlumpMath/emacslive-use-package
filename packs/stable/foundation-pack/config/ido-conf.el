@@ -1,20 +1,26 @@
-(use-package idomenu
-  :defer t)
-
-(use-package flx-ido
-  :defer t
+(use-package ido
   :init
-  (setq ido-enable-prefix nil
-        ido-create-new-buffer 'always
-        ido-max-prospects 10
-        ido-default-file-method 'selected-window
-        ido-everywhere 1)
+  (ido-mode t)
   :config
   (progn
-    (ido-mode t)
-    (flx-ido-mode 1)
-    (icomplete-mode 1)
+    (use-package flx-ido
+      :config
+      (progn
+        (flx-ido-mode t)
+        (setq ido-use-face nil)))
 
+    (use-package ido-vertical-mode
+      :config
+      (progn
+        (ido-vertical-mode)
+        (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)))
+
+    (icomplete-mode 1)
+    (setq ido-enable-prefix nil
+          ido-create-new-buffer 'always
+          ido-max-prospects 10
+          ido-default-file-method 'selected-window
+          ido-everywhere 1)
     (defvar live-symbol-names)
     (defvar live-name-and-pos)
     (define-key ido-file-completion-map (kbd "C-\\") 'backward-kill-word)
@@ -73,9 +79,6 @@
               (add-to-list 'live-symbol-names name)
               (add-to-list 'live-name-and-pos (cons name position))))))))))
 
-(use-package ido-vertical-mode
+(use-package idomenu
   :defer t
-  :init
-  (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
-  :config
-  (ido-vertical-mode))
+  :commands (idomenu))

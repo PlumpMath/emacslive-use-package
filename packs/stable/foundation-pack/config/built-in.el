@@ -12,12 +12,12 @@
 
 ;;store history of recently opened files
 (use-package recentf
-  :defer t
-  :init
-  (setq recentf-save-file (concat live-tmp-dir "recentf")
-        recentf-max-saved-items 200)
+;  :defer t
   :config
-  (recentf-mode t))
+  (progn
+    (setq recentf-save-file (concat live-tmp-dir "recentf")
+          recentf-max-saved-items 200)
+    (recentf-mode t)))
 
 ;;When you visit a file, point goes to the last place where it was
 ;;when you previously visited. Save file is set to live-tmp-dir/places

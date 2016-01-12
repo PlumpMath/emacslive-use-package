@@ -2,7 +2,6 @@
 
 (use-package live-fontify-hex
   :ensure nil
-  :defer t
   :load-path (lambda () (live-pack-lib-dir))
   :init
   (progn

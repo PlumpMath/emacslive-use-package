@@ -274,25 +274,32 @@ children of DIRECTORY."
       (write-file fname)
       (auto-save-mode 1))))
 
-(defun live-get-package-directory (pkg)
-  "Return the directory of PKG. Return nil if not found."
-  (let ((elpa-dir (concat user-emacs-directory "elpa/")))
-    (when (file-exists-p elpa-dir)
-      (let ((dir (cl-reduce (lambda (x y) (if x x y))
-			    (mapcar (lambda (x)
-				      (when (string-match
-					     (concat "/"
-						     (symbol-name pkg)
-						     "-[0-9]+") x) x))
-				    (directory-files elpa-dir 'full))
-			    :initial-value nil)))
-	(when dir (file-name-as-directory dir))))))
+(defun live-install-package (package)
+  (unless (package-installed-p package)
+    (package-refresh-contents)
+    (package-install package)))
 
-(defun live-load-or-install-package (pkg)
-  (let ((package (live-get-package-directory pkg)))
-    (if package
-	(add-to-list 'load-path package)
-      (progn
-	(package-refresh-contents)
-	(package-install 'use-package)))
-    (require pkg nil 'noerror)))
+(defun live-setup-packages ()
+  (require 'package)
+
+  (unless package--initialized
+    (setq package-archives
+          '(("gnu" . "http://elpa.gnu.org/packages/")
+            ("org" . "http://orgmode.org/elpa/")
+            ("melpa" . "https://melpa.org/packages/")
+            ("melpa-stable" . "https://stable.melpa.org/packages/")))
+    (setq package-enable-at-startup nil)
+    (package-initialize 'noactivate))
+
+  (live-install-package 'bind-key)
+  (live-install-package 'use-package)
+
+  (package-initialize)
+  ;; (let ((default-directory (concat user-emacs-directory "elpa/")))
+  ;;   (normal-top-level-add-subdirs-to-load-path))
+
+  (require 'bind-key)
+  (eval-when-compile
+    (require 'use-package))
+  (setq use-package-verbose t)
+  (setq use-package-always-ensure t))

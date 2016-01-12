@@ -190,22 +190,8 @@
   (if (and (file-exists-p pack-file) (not live-safe-modep))
       (load-file pack-file)))
 
-;; use-package
-(require 'package)
-(unless package--initialized
-  (setq package-archives
-        '(("gnu" . "http://elpa.gnu.org/packages/")
-          ("org" . "http://orgmode.org/elpa/")
-          ("melpa" . "https://melpa.org/packages/")
-          ("melpa-stable" . "https://stable.melpa.org/packages/")))
-  (setq package-enable-at-startup nil)
-  (package-initialize 'noactivate))
-
-(package-initialize)
-(setq use-package-verbose t)
-(live-load-or-install-package 'bind-key)
-(live-load-or-install-package 'use-package)
-(setq use-package-always-ensure t)
+;; Setup packages
+(live-setup-packages)
 
 ;; Load all packs - Power Extreme!
 (mapc (lambda (pack-dir)
