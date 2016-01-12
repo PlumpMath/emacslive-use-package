@@ -10,12 +10,7 @@
   :defer t
   :init
   (progn
-    (ac-config-default)
-    (ac-flyspell-workaround)
-    (add-to-list 'ac-dictionary-directories (concat (live-pack-lib-dir) "auto-complete/dict"))
     (setq ac-comphist-file (concat live-tmp-dir "ac-comphist.dat"))
-
-    (global-auto-complete-mode t)
     (setq ac-auto-show-menu t)
     (setq ac-dwim t)
     (setq ac-use-menu-map t)
@@ -34,6 +29,10 @@
                    ac-source-yasnippet)))
   :config
   (progn
+    (ac-config-default)
+    (ac-flyspell-workaround)
+    (global-auto-complete-mode t)
+    (add-to-list 'ac-dictionary-directories (concat (live-pack-lib-dir) "auto-complete/dict"))
     (dolist (mode '(magit-log-edit-mode log-edit-mode org-mode text-mode haml-mode
                                         sass-mode yaml-mode csv-mode espresso-mode haskell-mode
                                         html-mode nxml-mode sh-mode smarty-mode clojure-mode

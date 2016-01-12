@@ -11,23 +11,31 @@
     (setq uniquify-ignore-buffers-re "^\\*")))
 
 ;;store history of recently opened files
-(require 'recentf)
-(setq recentf-save-file (concat live-tmp-dir "recentf")
-      recentf-max-saved-items 200)
-(recentf-mode t)
+(use-package recentf
+  :defer t
+  :init
+  (setq recentf-save-file (concat live-tmp-dir "recentf")
+        recentf-max-saved-items 200)
+  :config
+  (recentf-mode t))
 
 ;;When you visit a file, point goes to the last place where it was
 ;;when you previously visited. Save file is set to live-tmp-dir/places
-(require 'saveplace)
-(setq-default save-place t)
-(setq save-place-file (concat live-tmp-dir "places"))
+(use-package saveplace
+  :defer t
+  :init
+  (progn
+    (setq-default save-place t)
+    (setq save-place-file (concat live-tmp-dir "places"))))
 
 ;;enable cua-mode for rectangular selections
-(require 'cua-base)
-(require 'cua-gmrk)
-(require 'cua-rect)
-(cua-mode 1)
-(setq cua-enable-cua-keys nil)
+(use-package cua
+  :ensure nil
+  :defer t
+  :init
+  (setq cua-enable-cua-keys nil)
+  :config
+  (cua-mode 1))
 
 ;;enable winner mode for C-c-(<left>|<right>) to navigate the history
 ;;of buffer changes i.e. undo a split screen

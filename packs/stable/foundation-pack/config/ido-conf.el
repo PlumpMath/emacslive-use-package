@@ -4,20 +4,20 @@
 (use-package flx-ido
   :defer t
   :init
+  (setq ido-enable-prefix nil
+        ido-create-new-buffer 'always
+        ido-max-prospects 10
+        ido-default-file-method 'selected-window
+        ido-everywhere 1)
+  :config
   (progn
     (ido-mode t)
     (flx-ido-mode 1)
     (icomplete-mode 1)
 
-    (setq ido-enable-prefix nil
-          ido-create-new-buffer 'always
-          ido-max-prospects 10
-          ido-default-file-method 'selected-window
-          ido-everywhere 1)
-
     (defvar live-symbol-names)
     (defvar live-name-and-pos)
-
+    (define-key ido-file-completion-map (kbd "C-\\") 'backward-kill-word)
     (defun live-recentf-ido-find-file ()
       "Find a recent file using ido."
       (interactive)
@@ -76,6 +76,6 @@
 (use-package ido-vertical-mode
   :defer t
   :init
-  (progn
-    (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
-    (ido-vertical-mode)))
+  (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
+  :config
+  (ido-vertical-mode))

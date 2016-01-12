@@ -1,7 +1,36 @@
 (use-package paredit
-;  :defer t
-  :init
+  :defer t
+  :config
   (progn
+    (define-key paredit-mode-map (kbd "C-c l k") 'paredit-splice-sexp-killing-forward)
+    (define-key paredit-mode-map (kbd "C-c l w") 'paredit-splice-sexp-killing-backward)
+    (define-key paredit-mode-map (kbd "C-c l l") 'align-cljlet)
+    (define-key paredit-mode-map (kbd "C-c l t") 'fill-paragraph)
+    (define-key paredit-mode-map (kbd "C-c l j") 'live-paredit-forward-slurp-sexp-neatly)
+    (define-key paredit-mode-map (kbd "C-M-e")   'paredit-backward-barf-sexp)
+    (define-key paredit-mode-map (kbd "C-M-s")   'paredit-backward-slurp-sexp)
+    (define-key paredit-mode-map (kbd "C-M-j")   'live-paredit-forward-slurp-sexp-neatly)
+    (define-key paredit-mode-map (kbd "C-M-y")   'paredit-forward-barf-sexp)
+    (define-key paredit-mode-map (kbd "C-M-z")   'align-cljlet)
+    (define-key paredit-mode-map (kbd "M-S")     'paredit-split-sexp)
+    (define-key paredit-mode-map (kbd "M-s")     'paredit-splice-sexp)
+    (define-key paredit-mode-map (kbd "M-j")     'paredit-join-sexps)
+    (define-key paredit-mode-map (kbd "M-P")     'live-paredit-previous-top-level-form)
+    (define-key paredit-mode-map (kbd "M-N")     'live-paredit-next-top-level-form)
+    (define-key paredit-mode-map (kbd "C-M-f")   'live-paredit-forward)
+    (define-key paredit-mode-map (kbd "M-q")     'live-paredit-reindent-defun)
+    (define-key paredit-mode-map (kbd "M-d")     'live-paredit-forward-kill-sexp)
+    (define-key paredit-mode-map (kbd "M-k")     'live-paredit-backward-kill)
+    (define-key paredit-mode-map (kbd "M-\\")    'live-paredit-delete-horizontal-space)
+    (define-key paredit-mode-map (kbd "C-M-i")   'paredit-forward-down)
+    (define-key paredit-mode-map (kbd "C-M-n")   'paredit-forward-up)
+    (define-key paredit-mode-map (kbd "C-M-p")   'paredit-backward-down)
+    (define-key paredit-mode-map (kbd "C-M-u")   'paredit-backward-up)
+    (define-key paredit-mode-map (kbd "M-T")     'transpose-sexps)
+    (define-key paredit-mode-map (kbd "C-M-k")   'live-paredit-copy-sexp-at-point)
+    (define-key paredit-mode-map (kbd "C-h") 'paredit-backward-delete)
+    (define-key paredit-mode-map (kbd "C-\\") 'paredit-backward-kill-word)
+
     (defun live-paredit-next-top-level-form ()
       (interactive)
       (while (ignore-errors (paredit-backward-up) t))

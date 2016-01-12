@@ -1,4 +1,4 @@
 (use-package mic-paren
   :defer t
-  :init
+  :config
   (paren-activate))

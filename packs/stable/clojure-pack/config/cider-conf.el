@@ -1,5 +1,5 @@
 (use-package cider
-;  :defer t
+  :defer t
   :init
   (progn
     (defun live-windows-hide-eol ()
@@ -23,7 +23,11 @@
 
     (setq cider-popup-stacktraces t)
     (setq cider-popup-stacktraces-in-repl t)
-    (add-to-list 'same-window-buffer-names "*cider*")))
+    (add-to-list 'same-window-buffer-names "*cider*"))
+  :config
+  (progn
+    (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
+    (define-key cider-mode-map (kbd "M-RET") 'cider-doc)))
 
 ;;Auto Complete
 (use-package ac-cider
@@ -52,7 +56,8 @@
   (progn
     (add-hook 'clojure-mode-hook (lambda ()
                                    (clj-refactor-mode 1)
-                                   (cljr-add-keybindings-with-prefix "C-c C-m")))
-
+                                   (cljr-add-keybindings-with-prefix "C-c C-m"))))
+  :config
+  (progn
     (define-key clojure-mode-map (kbd "C-:") 'cljr-cycle-stringlike)
     (define-key clojure-mode-map (kbd "C->") 'cljr-cycle-coll)))

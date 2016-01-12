@@ -29,7 +29,7 @@
   '(add-to-list 'ffip-patterns "*.clj"))
 
 (use-package clojure-mode
-;  :defer t
+  :defer t
   :init
   (add-hook 'clojure-mode-hook
             (lambda ()
@@ -53,10 +53,6 @@
     (setq auto-mode-alist (append '(("\\.cljs$" . clojure-mode))
                                   auto-mode-alist))
 
-    (dolist (x '(scheme emacs-lisp lisp clojure))
-      (add-hook (intern (concat (symbol-name x) "-mode-hook")) 'enable-paredit-mode)
-      (add-hook (intern (concat (symbol-name x) "-mode-hook")) 'rainbow-delimiters-mode))
-
     (defun live-warn-when-cider-not-connected ()
       (interactive)
       (message "nREPL server not connected. Run M-x cider or M-x cider-jack-in to connect."))
@@ -69,7 +65,15 @@
     )
   )
 
+(dolist (x '(scheme emacs-lisp lisp clojure))
+  (add-hook (intern (concat (symbol-name x) "-mode-hook")) 'enable-paredit-mode)
+  (add-hook (intern (concat (symbol-name x) "-mode-hook")) 'rainbow-delimiters-mode))
+
 ;;command to align let statements
 ;;To use: M-x align-cljlet
 (use-package align-cljlet
-  :defer t)
+  :defer t
+  :config
+  (progn
+    (define-key clojure-mode-map (kbd "C-c l l") 'align-cljlet)
+    (define-key clojure-mode-map (kbd "C-M-z")   'align-cljlet)))

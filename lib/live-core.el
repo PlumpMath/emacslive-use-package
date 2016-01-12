@@ -273,3 +273,26 @@ children of DIRECTORY."
     (with-current-buffer buf
       (write-file fname)
       (auto-save-mode 1))))
+
+(defun live-get-package-directory (pkg)
+  "Return the directory of PKG. Return nil if not found."
+  (let ((elpa-dir (concat user-emacs-directory "elpa/")))
+    (when (file-exists-p elpa-dir)
+      (let ((dir (cl-reduce (lambda (x y) (if x x y))
+			    (mapcar (lambda (x)
+				      (when (string-match
+					     (concat "/"
+						     (symbol-name pkg)
+						     "-[0-9]+") x) x))
+				    (directory-files elpa-dir 'full))
+			    :initial-value nil)))
+	(when dir (file-name-as-directory dir))))))
+
+(defun live-load-or-install-package (pkg)
+  (let ((package (live-get-package-directory pkg)))
+    (if package
+	(add-to-list 'load-path package)
+      (progn
+	(package-refresh-contents)
+	(package-install 'use-package)))
+    (require pkg nil 'noerror)))

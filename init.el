@@ -116,6 +116,14 @@
   (when emacs-live-directory
     (setq user-emacs-directory emacs-live-directory)))
 
+(defconst emacs-start-time (current-time))
+
+(defun live-time-check (where)
+  (let ((elapsed (float-time
+                  (time-subtract (current-time)
+                                 emacs-start-time))))
+    (message "Loading %s...done (%.3fs)" where elapsed)))
+
 (when live-supported-emacsp
 ;; Store live base dirs, but respect user's choice of `live-root-dir'
 ;; when provided.
@@ -182,33 +190,27 @@
   (if (and (file-exists-p pack-file) (not live-safe-modep))
       (load-file pack-file)))
 
-;; elpa
-(package-initialize nil)
+;; use-package
+(require 'package)
+(unless package--initialized
+  (setq package-archives
+        '(("gnu" . "http://elpa.gnu.org/packages/")
+          ("org" . "http://orgmode.org/elpa/")
+          ("melpa" . "https://melpa.org/packages/")
+          ("melpa-stable" . "https://stable.melpa.org/packages/")))
+  (setq package-enable-at-startup nil)
+  (package-initialize 'noactivate))
 
-(setq package-archives
-      '(("gnu" . "http://elpa.gnu.org/packages/")
-        ("org" . "http://orgmode.org/elpa/")
-        ("melpa" . "https://melpa.org/packages/")
-        ("melpa-stable" . "https://stable.melpa.org/packages/")))
-
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+(package-initialize)
 (setq use-package-verbose t)
-(require 'use-package)
-(use-package auto-compile
-  :ensure t
-  :config
-  (auto-compile-on-load-mode)
-  (setq use-package-always-ensure t))
-                                        ;(add-hook 'emacs-lisp-mode-hook 'aggressive-indent-mode)
-                                        ;(aggressive-indent-mode)
-;(add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
+(live-load-or-install-package 'bind-key)
+(live-load-or-install-package 'use-package)
+(setq use-package-always-ensure t)
 
 ;; Load all packs - Power Extreme!
 (mapc (lambda (pack-dir)
-          (live-load-pack pack-dir))
-        (live-pack-dirs))
+        (live-load-pack pack-dir))
+      (live-pack-dirs))
 
 (setq live-welcome-messages
       (if (live-user-first-name-p)

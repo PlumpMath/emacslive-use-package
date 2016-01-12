@@ -1,5 +1,5 @@
 ;; The amazing undo tree
 (use-package undo-tree
   :defer t
-  :init
+  :config
   (global-undo-tree-mode))
