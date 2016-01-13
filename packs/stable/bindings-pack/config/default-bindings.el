@@ -95,7 +95,7 @@
 
 
 ;;browse kill ring (visual paste)
-(global-set-key (kbd "M-y") 'browse-kill-ring)
+;(global-set-key (kbd "M-y") 'browse-kill-ring)
 
 ;;make C-] and M-] cut and copy respectively
 (global-set-key (kbd "C-]") 'kill-region)
@@ -187,7 +187,7 @@
       (occur (if isearch-regexp isearch-string (regexp-quote isearch-string))))))
 
 ;; Ace jump mode
-(global-set-key (kbd "C-o") 'ace-jump-mode)
+;(global-set-key (kbd "C-o") 'ace-jump-mode)
 
 ;; Show documentation/information with M-RET
 (define-key lisp-mode-shared-map (kbd "M-RET") 'live-lisp-describe-thing-at-point)

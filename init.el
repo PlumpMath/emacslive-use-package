@@ -3,6 +3,14 @@
 ;; This is where everything starts. Do you remember this place?
 ;; It remembers you...
 
+(defconst emacs-start-time (current-time))
+
+(defun live-get-elapsed-time ()
+  (let ((elapsed (float-time
+                  (time-subtract (current-time)
+                                 emacs-start-time))))
+    (message "(%.3fs)" elapsed)))
+
 (setq live-ascii-art-logo ";;
 ;;     MM\"\"\"\"\"\"\"\"`M
 ;;     MM  mmmmmmmM
@@ -116,14 +124,6 @@
   (when emacs-live-directory
     (setq user-emacs-directory emacs-live-directory)))
 
-(defconst emacs-start-time (current-time))
-
-(defun live-time-check (where)
-  (let ((elapsed (float-time
-                  (time-subtract (current-time)
-                                 emacs-start-time))))
-    (message "Loading %s...done (%.3fs)" where elapsed)))
-
 (when live-supported-emacsp
 ;; Store live base dirs, but respect user's choice of `live-root-dir'
 ;; when provided.
@@ -190,8 +190,12 @@
   (if (and (file-exists-p pack-file) (not live-safe-modep))
       (load-file pack-file)))
 
+(live-get-elapsed-time)
+
 ;; Setup packages
 (live-setup-packages)
+
+(live-get-elapsed-time)
 
 ;; Load all packs - Power Extreme!
 (mapc (lambda (pack-dir)
@@ -237,3 +241,5 @@
 
 (message "\n\n Pack loading completed. Your Emacs is Live...\n\n")
 (put 'downcase-region 'disabled nil)
+
+(live-get-elapsed-time)

@@ -30,12 +30,19 @@
 
 (use-package clojure-mode
   :defer t
-  :init
-  (add-hook 'clojure-mode-hook
-            (lambda ()
-              (setq buffer-save-without-query t)))
+  :mode ("\\.clj$" . clojure-mode)
+  :commands (clojure-mode)
   :config
   (progn
+    (use-package align-cljlet
+      :config
+      (progn
+        (define-key clojure-mode-map (kbd "C-c l l") 'align-cljlet)
+        (define-key clojure-mode-map (kbd "C-M-z")   'align-cljlet)))
+    (add-hook 'clojure-mode-hook
+              (lambda ()
+                (setq buffer-save-without-query t)))
+
     ;;Treat hyphens as a word character when transposing words
     (defvar clojure-mode-with-hyphens-as-word-sep-syntax-table
       (let ((st (make-syntax-table clojure-mode-syntax-table)))
@@ -68,12 +75,3 @@
 (dolist (x '(scheme emacs-lisp lisp clojure))
   (add-hook (intern (concat (symbol-name x) "-mode-hook")) 'enable-paredit-mode)
   (add-hook (intern (concat (symbol-name x) "-mode-hook")) 'rainbow-delimiters-mode))
-
-;;command to align let statements
-;;To use: M-x align-cljlet
-(use-package align-cljlet
-  :defer t
-  :config
-  (progn
-    (define-key clojure-mode-map (kbd "C-c l l") 'align-cljlet)
-    (define-key clojure-mode-map (kbd "C-M-z")   'align-cljlet)))

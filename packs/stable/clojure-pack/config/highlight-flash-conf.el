@@ -1,16 +1,17 @@
 ;; highlight expression on eval
 (use-package highlight
-  :defer t)
+;  :defer t
+  )
 
 (use-package eval-sexp-fu
-  :defer t)
+;  :defer t
+  )
 
 (use-package cider-eval-sexp-fu
-  :defer t
-  :init
-  (setq eval-sexp-fu-flash-duration 0.5)
+  :defer 5
   :config
   (progn
+    (setq eval-sexp-fu-flash-duration 0.5)
     (defun live-bounds-of-preceding-sexp ()
       "Return the bounds of sexp before the point. Copies semantics
    directly from the fn preceding-sexp to ensure highlighted area

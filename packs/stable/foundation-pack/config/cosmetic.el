@@ -49,10 +49,10 @@
   (live-set-default-darwin-font "Menlo 13")))
 
 ;; title format
-(setq frame-title-format
-      '((:eval (if (buffer-file-name)
-                   (abbreviate-file-name (buffer-file-name))
-                 "%b"))))
+;; (setq frame-title-format
+;;       '((:eval (if (buffer-file-name)
+;;                    (abbreviate-file-name (buffer-file-name))
+;;                  "%b"))))
 
 ;; make fringe smaller
 (if (fboundp 'fringe-mode)

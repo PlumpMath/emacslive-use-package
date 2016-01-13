@@ -111,7 +111,8 @@
 (defun live-load-config-file (f-name)
   "Load the config file with name f-name in the current pack"
   (let* ((config-dir (live-pack-config-dir)))
-    (load-file (concat config-dir f-name))))
+    (load-file (concat config-dir f-name))
+    (live-get-elapsed-time)))
 
 (defun live-use-packs (pack-list)
   "Use the packs in pack-list - overrides the defaults and any
@@ -274,32 +275,22 @@ children of DIRECTORY."
       (write-file fname)
       (auto-save-mode 1))))
 
-(defun live-install-package (package)
-  (unless (package-installed-p package)
-    (package-refresh-contents)
-    (package-install package)))
-
 (defun live-setup-packages ()
-  (require 'package)
+  (setq package-archives
+        '(("gnu" . "http://elpa.gnu.org/packages/")
+          ("org" . "http://orgmode.org/elpa/")
+          ("melpa" . "https://melpa.org/packages/")
+          ("melpa-stable" . "https://stable.melpa.org/packages/")))
+  (setq package-enable-at-startup nil)
+  (package-initialize 'noactivate)
 
-  (unless package--initialized
-    (setq package-archives
-          '(("gnu" . "http://elpa.gnu.org/packages/")
-            ("org" . "http://orgmode.org/elpa/")
-            ("melpa" . "https://melpa.org/packages/")
-            ("melpa-stable" . "https://stable.melpa.org/packages/")))
-    (setq package-enable-at-startup nil)
-    (package-initialize 'noactivate))
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
 
-  (live-install-package 'bind-key)
-  (live-install-package 'use-package)
-
-  ;; (package-initialize)
   (let ((default-directory (concat user-emacs-directory "elpa/")))
     (normal-top-level-add-subdirs-to-load-path))
 
-  (require 'bind-key)
-  (eval-when-compile
-    (require 'use-package))
+  (require 'use-package)
   (setq use-package-verbose t)
   (setq use-package-always-ensure t))

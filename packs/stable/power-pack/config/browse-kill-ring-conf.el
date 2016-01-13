@@ -1,5 +1,6 @@
 (use-package browse-kill-ring
   :defer t
+  :bind ("M-y" . browse-kill-ring)
   :init
   (progn
     (setq browse-kill-ring-highlight-current-entry t)
