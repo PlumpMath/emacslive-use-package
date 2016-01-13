@@ -1,6 +1,7 @@
 ;; Clojure Pack
 (use-package rainbow-delimiters
-  :defer t)
+  :defer t
+  :commands rainbow-delimiters-mode)
 
 (use-package uuid
   :defer t)

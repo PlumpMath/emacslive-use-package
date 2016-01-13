@@ -7,9 +7,10 @@
 ;;auto-complete mode
 
 (use-package auto-complete
-  :defer t
-  :init
+  :defer 5
+  :config
   (progn
+    (require 'auto-complete-config)
     (setq ac-comphist-file (concat live-tmp-dir "ac-comphist.dat"))
     (setq ac-auto-show-menu t)
     (setq ac-dwim t)
@@ -26,9 +27,7 @@
                    ac-source-words-in-buffer
                    ac-source-words-in-same-mode-buffers
                    ac-source-semantic
-                   ac-source-yasnippet)))
-  :config
-  (progn
+                   ac-source-yasnippet))
     (ac-config-default)
     (ac-flyspell-workaround)
     (global-auto-complete-mode t)

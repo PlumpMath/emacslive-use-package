@@ -1,6 +1,7 @@
 (use-package magit
   :defer t
-  :init
+  :bind ("C-x g" . magit-status)
+  :config
   (add-hook 'magit-log-edit-mode-hook
             (lambda ()
               (set-fill-column 72)

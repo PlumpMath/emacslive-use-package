@@ -1,5 +1,6 @@
 (use-package win-switch
   :defer t
+  :bind ("C-x o" . win-switch-dispatch)
   :init
   (progn
     (setq win-switch-feedback-background-color "DeepPink3")

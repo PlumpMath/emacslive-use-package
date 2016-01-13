@@ -1,5 +1,5 @@
 (use-package popwin
-  :defer t
+  :defer 5
   :config
   (progn
     (setq display-buffer-function 'popwin:display-buffer)

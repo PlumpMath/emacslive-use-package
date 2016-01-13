@@ -1,5 +1,6 @@
 (use-package paredit
   :defer t
+  :commands enable-paredit-mode
   :config
   (progn
     (define-key paredit-mode-map (kbd "C-c l k") 'paredit-splice-sexp-killing-forward)

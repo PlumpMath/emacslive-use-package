@@ -1,6 +1,9 @@
 (use-package ido
-  :init
-  (ido-mode t)
+  :defer t
+  :bind (("C-x C-f" . ido-find-file)
+         ("C-x b"   . ido-switch-buffer)
+         ("C-x B"   . ido-switch-buffer-other-window)
+         ("C-x f"   . live-recentf-ido-find-file))
   :config
   (progn
     (use-package flx-ido
@@ -15,6 +18,7 @@
         (ido-vertical-mode)
         (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)))
 
+    (ido-mode t)
     (icomplete-mode 1)
     (setq ido-enable-prefix nil
           ido-create-new-buffer 'always

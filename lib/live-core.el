@@ -294,9 +294,9 @@ children of DIRECTORY."
   (live-install-package 'bind-key)
   (live-install-package 'use-package)
 
-  (package-initialize)
-  ;; (let ((default-directory (concat user-emacs-directory "elpa/")))
-  ;;   (normal-top-level-add-subdirs-to-load-path))
+  ;; (package-initialize)
+  (let ((default-directory (concat user-emacs-directory "elpa/")))
+    (normal-top-level-add-subdirs-to-load-path))
 
   (require 'bind-key)
   (eval-when-compile

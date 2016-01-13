@@ -1,5 +1,5 @@
 (use-package yasnippet
-  :defer t
+  :defer 5
   :init
   (progn
     (setq live-yasnippet-dir (concat live-etc-dir "snippets"))
