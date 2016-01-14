@@ -33,43 +33,42 @@
   :mode ("\\.clj$" . clojure-mode)
   :commands (clojure-mode)
   :config
-  (progn
-    (use-package align-cljlet
-      :config
-      (progn
-        (define-key clojure-mode-map (kbd "C-c l l") 'align-cljlet)
-        (define-key clojure-mode-map (kbd "C-M-z")   'align-cljlet)))
-    (add-hook 'clojure-mode-hook
-              (lambda ()
-                (setq buffer-save-without-query t)))
+  (use-package align-cljlet
+    :config
+    (define-key clojure-mode-map (kbd "C-c l l") 'align-cljlet)
+    (define-key clojure-mode-map (kbd "C-M-z")   'align-cljlet))
 
-    ;;Treat hyphens as a word character when transposing words
-    (defvar clojure-mode-with-hyphens-as-word-sep-syntax-table
-      (let ((st (make-syntax-table clojure-mode-syntax-table)))
-        (modify-syntax-entry ?- "w" st)
-        st))
+  (add-hook 'clojure-mode-hook
+            (lambda ()
+              (setq buffer-save-without-query t)))
 
-    (defun live-transpose-words-with-hyphens (arg)
-      "Treat hyphens as a word character when transposing words"
-      (interactive "*p")
-      (with-syntax-table clojure-mode-with-hyphens-as-word-sep-syntax-table
-        (transpose-words arg)))
+  ;;Treat hyphens as a word character when transposing words
+  (defvar clojure-mode-with-hyphens-as-word-sep-syntax-table
+    (let ((st (make-syntax-table clojure-mode-syntax-table)))
+      (modify-syntax-entry ?- "w" st)
+      st))
 
-    (define-key clojure-mode-map (kbd "M-t") 'live-transpose-words-with-hyphens)
+  (defun live-transpose-words-with-hyphens (arg)
+    "Treat hyphens as a word character when transposing words"
+    (interactive "*p")
+    (with-syntax-table clojure-mode-with-hyphens-as-word-sep-syntax-table
+      (transpose-words arg)))
 
-    (setq auto-mode-alist (append '(("\\.cljs$" . clojure-mode))
-                                  auto-mode-alist))
+  (define-key clojure-mode-map (kbd "M-t") 'live-transpose-words-with-hyphens)
 
-    (defun live-warn-when-cider-not-connected ()
-      (interactive)
-      (message "nREPL server not connected. Run M-x cider or M-x cider-jack-in to connect."))
+  (setq auto-mode-alist (append '(("\\.cljs$" . clojure-mode))
+                                auto-mode-alist))
 
-    (define-key clojure-mode-map (kbd "C-M-x")   'live-warn-when-cider-not-connected)
-    (define-key clojure-mode-map (kbd "C-x C-e") 'live-warn-when-cider-not-connected)
-    (define-key clojure-mode-map (kbd "C-c C-e") 'live-warn-when-cider-not-connected)
-    (define-key clojure-mode-map (kbd "C-c C-l") 'live-warn-when-cider-not-connected)
-    (define-key clojure-mode-map (kbd "C-c C-r") 'live-warn-when-cider-not-connected)
-    )
+  (defun live-warn-when-cider-not-connected ()
+    (interactive)
+    (message "nREPL server not connected. Run M-x cider or M-x cider-jack-in to connect."))
+
+  (define-key clojure-mode-map (kbd "C-M-x")   'live-warn-when-cider-not-connected)
+  (define-key clojure-mode-map (kbd "C-x C-e") 'live-warn-when-cider-not-connected)
+  (define-key clojure-mode-map (kbd "C-c C-e") 'live-warn-when-cider-not-connected)
+  (define-key clojure-mode-map (kbd "C-c C-l") 'live-warn-when-cider-not-connected)
+  (define-key clojure-mode-map (kbd "C-c C-r") 'live-warn-when-cider-not-connected)
+
   )
 
 (dolist (x '(scheme emacs-lisp lisp clojure))

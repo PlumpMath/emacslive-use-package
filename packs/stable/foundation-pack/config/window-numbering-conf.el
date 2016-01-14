@@ -1,4 +1,4 @@
 (use-package window-numbering
-  :defer t
+  :defer 5
   :config
   (window-numbering-mode))

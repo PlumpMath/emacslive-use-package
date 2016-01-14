@@ -24,6 +24,7 @@
 
 ;; Ensure the exec-path honours the shell PATH
 (use-package exec-path-from-shell
+  :defer 10
   :config
   (exec-path-from-shell-initialize))
 

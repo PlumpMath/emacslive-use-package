@@ -277,10 +277,8 @@ children of DIRECTORY."
 
 (defun live-setup-packages ()
   (setq package-archives
-        '(("gnu" . "http://elpa.gnu.org/packages/")
-          ("org" . "http://orgmode.org/elpa/")
-          ("melpa" . "https://melpa.org/packages/")
-          ("melpa-stable" . "https://stable.melpa.org/packages/")))
+	'(("gnu" . "http://elpa.gnu.org/packages/")
+	  ("melpa" . "http://melpa.org/packages/")))
   (setq package-enable-at-startup nil)
   (package-initialize 'noactivate)
 
@@ -288,9 +286,10 @@ children of DIRECTORY."
     (package-refresh-contents)
     (package-install 'use-package))
 
+					;  (package-initialize)
   (let ((default-directory (concat user-emacs-directory "elpa/")))
     (normal-top-level-add-subdirs-to-load-path))
 
   (require 'use-package)
-  (setq use-package-verbose t)
+					;  (setq use-package-verbose t)
   (setq use-package-always-ensure t))

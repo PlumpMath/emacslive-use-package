@@ -28,7 +28,7 @@
 ;;         M         M M  M M     .dMMM MM        .M
 ;;         MMMMMMMMMMM MMMM MMMMMMMMMMM MMMMMMMMMMMM ")
 
-(message (concat "\n\n" live-ascii-art-logo "\n\n"))
+;(message (concat "\n\n" live-ascii-art-logo "\n\n"))
 
 (add-to-list 'command-switch-alist
              (cons "--live-safe-mode"
@@ -169,6 +169,7 @@
                      "git-pack"
                      "org-pack"
                      "clojure-pack"
+                     "syntax-checking-pack"
                      "bindings-pack"))
        (live-dir (file-name-as-directory "stable"))
        (dev-dir  (file-name-as-directory "dev")))

@@ -1,9 +1,7 @@
 (use-package auto-compile
-  :defer t
+  :defer 5
   :diminish (auto-compile-mode . "")
-  :init
-  (setq load-prefer-newer t)
   :config
-  (progn
-    (auto-compile-on-load-mode 1)
-    (auto-compile-on-save-mode 1)))
+  (setq load-prefer-newer t)
+  (auto-compile-on-load-mode)
+  (auto-compile-on-save-mode))

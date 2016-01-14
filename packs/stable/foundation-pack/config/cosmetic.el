@@ -5,16 +5,16 @@
 (setq font-lock-maximum-decoration t
       color-theme-is-global t)
 
-;; Line-wrapping
+;; ;; Line-wrapping
 (set-default 'fill-column 72)
 
-;get rid of clutter
+;; ;get rid of clutter
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 (if (fboundp 'tooltip-mode) (tooltip-mode -1))
 
-;remove bells
+;; ;remove bells
 (setq ring-bell-function 'ignore)
 
 ;; font setitng functions
@@ -49,10 +49,10 @@
   (live-set-default-darwin-font "Menlo 13")))
 
 ;; title format
-;; (setq frame-title-format
-;;       '((:eval (if (buffer-file-name)
-;;                    (abbreviate-file-name (buffer-file-name))
-;;                  "%b"))))
+(setq frame-title-format
+      '((:eval (if (buffer-file-name)
+                   (abbreviate-file-name (buffer-file-name))
+                 "%b"))))
 
 ;; make fringe smaller
 (if (fboundp 'fringe-mode)

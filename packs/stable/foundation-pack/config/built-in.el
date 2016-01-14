@@ -1,37 +1,35 @@
 ;;use file path to ensure buffer name uniqueness
 (use-package uniquify
   :ensure nil
-  :defer t
+  :defer 5
   :load-path (lambda () (live-pack-lib-dir))
   :init
-  (progn
-    (setq uniquify-buffer-name-style 'forward)
-    (setq uniquify-separator "/")
-    (setq uniquify-after-kill-buffer-p t)
-    (setq uniquify-ignore-buffers-re "^\\*")))
+  (setq uniquify-buffer-name-style 'forward)
+  (setq uniquify-separator "/")
+  (setq uniquify-after-kill-buffer-p t)
+  (setq uniquify-ignore-buffers-re "^\\*"))
 
 ;;store history of recently opened files
 (use-package recentf
-;  :defer t
+  :defer t
+  :commands recentf-mode
   :config
-  (progn
-    (setq recentf-save-file (concat live-tmp-dir "recentf")
-          recentf-max-saved-items 200)
-    (recentf-mode t)))
+  (setq recentf-save-file (concat live-tmp-dir "recentf")
+        recentf-max-saved-items 200)
+  (recentf-mode t))
 
 ;;When you visit a file, point goes to the last place where it was
 ;;when you previously visited. Save file is set to live-tmp-dir/places
 (use-package saveplace
-  :defer t
+  :defer 5
   :init
-  (progn
-    (setq-default save-place t)
-    (setq save-place-file (concat live-tmp-dir "places"))))
+  (setq-default save-place t)
+  (setq save-place-file (concat live-tmp-dir "places")))
 
 ;;enable cua-mode for rectangular selections
 (use-package cua
   :ensure nil
-  :defer t
+  :defer 5
   :init
   (setq cua-enable-cua-keys nil)
   :config
